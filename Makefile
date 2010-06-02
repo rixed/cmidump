@@ -1,24 +1,20 @@
 OCAMLC     = ocamlfind ocamlc
 OCAMLDEP   = ocamlfind ocamldep
-OCAMLFLAGS = -w Ae
+OCAMLFLAGS = -w Ae -I +../compiler-lib
 PROGRAM    = cmidump
-EXTCMI     = printtyp.cmi typemod.cmi config.cmi
 TOPLVL     = $(shell ocamlfind ocamlc -where)/toplevellib.cma
 INSTALLDIR = $(DESTDIR)$(shell dirname $(shell which ocamlfind))
 
 .PHONY: all clean install uninstall reinstall
 
-all: checkcmi $(PROGRAM)
+all: $(PROGRAM)
 
 cmidump: cmidump.cmo
 	$(OCAMLC) -o $@ $(TOPLVL) $(OCAMLFLAGS) $^
 
-checkcmi:
-	@for i in $(EXTCMI) ; do if ! test -f $$i ; then echo "Ocamlc will fail if it cant access $$i" ; fi ; done
-
 install: $(PROGRAM)
 	@echo "Installing $< in $(INSTALLDIR)"
-	install -o root -g root $< $(INSTALLDIR)
+	install $< $(INSTALLDIR)
 
 uninstall:
 	ocamlfind remove $(PROGRAM)
