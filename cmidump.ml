@@ -24,7 +24,7 @@ let print_magic m =
 let print_name name = printf "@[Name@ =@ %s@]@." name
 
 let print_crcs crcs =
-	let print_crc (modname, crc) = printf "@[%s [%s]@]@ " modname (String.escaped crc) in
+	let print_crc (modname, crc) = printf "@[%s [%s]@]@ " modname (Digest.to_hex crc) in
 	printf "@[CRCs = @[" ; List.iter print_crc crcs ; printf "@]@]@."
 
 let print_sig sign =
